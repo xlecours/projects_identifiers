@@ -10,42 +10,41 @@
 
 namespace LORIS\StudyEntities\Candidate;
 
-class TransferObject
+class TransferObject implements Candidate
 {
     protected $candid;
     protected $pscid;
     protected $sex;
 
-    public function __contructor(
+    public function __construct()
     {
     }
 
     public function fromProps(
-        ?CandID $candid = null,
-        ?PSCID $pscid = null,
-        ?string $sex = null
-    {
-        $this->candid = $candid;
-        $this->pscid  = $pscid;
-        $this->addSex($sex);
+        ?CandID $candid,
+        ?PSCID $pscid, // Kept here because the column is not nullable, for now. Should be an array of identifier.
+        ?Sex $sex
+    ) {
+        $new = clone($this);
+        $new->candid = $candid;
+        $new->pscid  = $pscid;
+        $new->sex = $sex;
+        return $new;
     }
 
-    protected function addSex(): TransferObject
+    public function getCandID(): CandID
     {
-        if ($this->sex === null) {
-            throw new \MutationException('');
-        }
-        if ($sex != 'M' || $sex != 'F') {
-            throw new \InvalidValueException('');
-        }
-        $this->sex = $sex;
+        return $this->candid;
     }
 
-    public function withSex(string $sex)
+    public function getIdentifiers(): array
     {
-            throw new SexException();
-        }
-        $new = $this;
+        return array($this->candid, $this->pscid);
+    }
+
+    public function getSex(): Sex
+    {
+        return $this->sex;
     }
 }
  

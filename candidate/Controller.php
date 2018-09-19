@@ -7,11 +7,16 @@ class Controller
     /**
      * @var Database
      */
-    protected $database;
+    protected $dao;
 
     public function __construct(\Database $database)
     {
-        $this->database = $database;
+        $this->sa = new SQLAccessor($database);
+    }
+
+    public function getCandidateByCandID(CandID $candid): Candidate
+    {
+        return $this->sa->getCandidateByCandID($candid);
     }
 
     public function addIdentifier(Candidate $c, Identifier $i): Candidate
@@ -19,7 +24,7 @@ class Controller
         $c = $c->withIdentifier($i);
         if ($i->isInvalid()) throw new \InvalidIdentifierException();
 
-        $this->database->prepare()(
+        $this->database->prepare();
 
         //$cdto = $this->cdao->addIdentifier($c->asDTO(), $i);
         //return new Candidate($cdto);
@@ -49,5 +54,5 @@ class Controller
         
     }
 
-    protected function saveCandidate()
+    protected function saveCandidate() {}
 }
