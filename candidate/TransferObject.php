@@ -24,11 +24,20 @@ class TransferObject implements Candidate
         ?CandID $candid,
         ?PSCID $pscid, // Kept here because the column is not nullable, for now. Should be an array of identifier.
         ?Sex $sex
-    ) {
+    ): TransferObject {
         $new = clone($this);
         $new->candid = $candid;
         $new->pscid  = $pscid;
         $new->sex = $sex;
+        return $new;
+    }
+
+    public function fromDBRow(array $row): TransferObject
+    {
+        $new = clone($this);
+        $new->candid = $row['CandID'];
+        $new->pscid  = $row['PSCID'];
+        $new->sex = $row['Sex'];
         return $new;
     }
 

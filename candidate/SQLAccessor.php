@@ -9,11 +9,11 @@ class SQLAccessor
     }
     
     /**
-     * @throws \RuntimeException When the candidate is
+     * @throws \NotFound When the candidate is missing
      */
     public function getCandidateByCandID(CandID $candid): TransferObject
     {
-        $results = $this->database->pselect(
+        $results = $this->database->pselectRow(
         '
           SELECT 
             CandID,
@@ -29,6 +29,16 @@ class SQLAccessor
 
         if ($results === null) throw new \NotFound("Candidate not found");
 
-        return (new TransferObject())->fromProps($results); // We might need a fromDBRow ??
+        $props = $this->propsFromDBRow($results);
+        return (new TransferObject())->fromProps(...$props);
+    }
+
+    protected function propsFromDBRow(array $row): array
+    {
+        return array(
+            new CandID($row['CandID']),
+            new PSCID($row['PSCID']),
+            new Sex($row['Sex'])
+        );
     }
 }

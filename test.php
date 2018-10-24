@@ -11,10 +11,8 @@ require_once('./candidate/Sex.php');
 use \LORIS\StudyEntities\Candidate\Controller;
 use \LORIS\StudyEntities\Candidate\CandID;
 
-// Add a ExternalID to an existing candidate
-//$d  = \Database::singleton();
 class Database {
-    public function pselect($q,$p) {
+    public function pselectRow($q,$p) {
         return array(
             'CandID' => 123456,
             'PSCID'  => 'ABC123',
@@ -25,8 +23,11 @@ class Database {
 
 class NotFound extends \Exception {}
 
+// Add a ExternalID to an existing candidate
 $cc = new Controller(new Database());
 $c1 = $cc->getCandidateByCandID(new CandID('123456'));
+var_dump($c1);
 
-var_dump($candidate_controller);
+$i  = new ExternalID('This is not wrong!');
+$c1 = $cc->addCandidateIdentifer($c1, $i);
 

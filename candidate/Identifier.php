@@ -41,3 +41,21 @@ class ExternalID extends ValidatableIdentifier
     }
 }
 
+class PSCID extends ValidatableIdentifier
+{
+    public function getType(): string
+    {
+        return 'PSCID';
+    }
+
+    static protected function validate(string $value): bool
+    {
+        // Who are we to know?
+        return true;
+    }
+
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+}
